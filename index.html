@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- bootstrap 4.5버전 css연결 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <!-- //style.css연결 -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="container"> <!--container은 bootstrap 그리드 그릴때 쓰인거임 -->
+    <!-- HTML <article> 요소는 문서, 페이지, 애플리케이션, 또는 사이트 안에서 독립적으로 구분해 배포하거나 재사용할 수 있는 구획을 나타냅니 -->
+    <article class="article">
+        <h1 class="mt-5 text-center">나랑 꼭 닮은 세렝게티 동물은?</h1>
+        <button type="button" class="btn btn-primary" onclick = 'start()'>테스트시작하기</button>
+    </article>
+    <article class="question">
+        <div class="progress">
+            
+            <div class="progress-bar" role="progressbar" style="width: calc(100/12*1%)" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        <h2 id = "title" class="text-center mt-5">문제 </h2>
+        <!-- 어떤문제의 점수를 높여줄지 정의 -->
+        <input id="type" type="hidden"  value="EI">
+        <button id = "A" type="button" class="btn btn-primary mt-5">primary</button>
+        <button id = "B" type="button" class="btn btn-primary mt-5">primary</button>
+    </article>
+
+    <article class="result">
+        <img id="img" src="lion.jpg" alt="" class="rounded-circle mt-5" >
+        <h2 id="animal" class="text-center mt-5">동물이름</h2>
+        <h3 id="explain" class="text-center mt-5">설명</h3>
+    </article>
+    <!-- 태그를 만들고.. -->
+    <input type="hidden" id="EI" value="0">
+    <input type="hidden" id="SN" value="0">
+    <input type="hidden" id="TF" value="0">
+    <input type="hidden" id="JP" value="0">
+    <!-- bootstrap js관련 연결 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script>
+        var num = 1;
+        //객체 {key:{value}}
+        var q = {
+            1: {"title": "문제 1번", "type":"EI", "A": "E", "B": "I"},
+            2: {"title": "문제 2번", "type":"EI", "A": "E", "B": "I"},
+            3: {"title": "문제 3번", "type":"EI", "A": "E", "B": "I"},
+            4: {"title": "문제 4번", "type":"SN", "A": "S", "B": "N"},
+            5: {"title": "문제 5번", "type":"SN", "A": "S", "B": "N"},
+            6: {"title": "문제 6번", "type":"SN", "A": "S", "B": "N"},
+            7: {"title": "문제 7번", "type":"TF", "A": "T", "B": "F"},
+            8: {"title": "문제 8번", "type":"TF", "A": "T", "B": "F"},
+            9: {"title": "문제 9번", "type":"TF", "A": "T", "B": "F"},
+            10: {"title": "문제 10번", "type":"JP", "A": "J", "B": "P"},
+            11: {"title": "문제 11번", "type":"JP", "A": "J", "B": "P"},
+            12: {"title": "문제 12번", "type":"JP", "A": "J", "B": "P"},
+        }
+        var result = {
+            "ISTJ": {"aniaml": "하마","explain":"하마 설명","img":"lion.jpg"},
+            "ENFP": {"aniaml": "멋사","explain":"멋사설명","img":"lion.jpg"},
+            "ENTJ": {"aniaml": "호랑이","explain":"호랑이 설명","img":"lion.jpg"}
+        }
+        function start(){
+            // start 버튼을 클릭하면, start-article css 호출하여 hide()로 사라지게함
+            $(".article").hide();
+            $(".question").show();     
+            next();
+        }
+        // id A 불러옴
+        $("#A").click(
+            function(){
+                // 클릭시 잘보여지는지확인
+                // console.log($("#type").val());
+                //var()는 해당 id의 value
+                var type = $("#type").val()
+                //이전값
+                var prevalue = $("#"+ type).val()
+                // console.log(parseInt(prevalue)+1)
+                $("#"+ type).val(parseInt(prevalue)+1)
+                
+                //A를릭해야 문제로 넘어가야함
+                next();
+            }
+        )
+
+        // id B 불러옴
+        $("#B").click(
+            function(){
+                //B를릭해야 문제로 넘어가야함
+                next();
+            }
+        )        
+        
+        function next(){
+            if (num == 13){
+                $(".question").hide()
+                $(".result").show()
+
+                var mbti = ""
+                
+                
+                //3항연산자 if ? A : B 
+                mbti += (parseInt($("#EI").val()) < 2) ? "I" : "E";
+                mbti += (parseInt($("#SN").val()) < 2) ? "N" : "S";
+                mbti += (parseInt($("#TF").val()) < 2) ? "F" : "T";
+                mbti += (parseInt($("#JP").val()) < 2) ? "P" : "J";
+                alert(mbti);
+                //mbti별 이미지,동물,설명 변경
+                $('#img').attr("src",result[mbti]["img"]);
+                $('#animal').html(result[mbti]["animal"]);
+                $("#explain").html(result[mbti]["explain"]);
+
+            }else{
+                console.log($("#EI").val())
+                //attr()태그 속성변경
+                $(".progress-bar").attr('style','width: calc(100/12*' +num+'%)');
+                $("#title").html(q[num]["title"]);
+                $("#type").val(q[num]["type"]);
+                $("#A").html(q[num]["A"]);
+                $("#B").html(q[num]["B"]);
+                num++;
+            }
+
+        }
+    </script>
+</body>
+</html>
